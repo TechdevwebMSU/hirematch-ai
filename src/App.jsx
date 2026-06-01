@@ -153,8 +153,7 @@ export default function App() {
           </h1>
 
           <p className="mt-6 text-lg text-slate-900/65 max-w-xl leading-8">
-            Choose your target city and country, select how many jobs you want,
-            and let the agent return matching roles, apply links, and tailored
+            Choose your target city, country and let the agent return matching roles, apply links, and tailored
             cover letters.
           </p>
 
@@ -267,11 +266,23 @@ export default function App() {
                   <div>
                     <p className="text-slate-900 font-semibold mb-1">Certifications:</p>
                     <div className="flex flex-wrap gap-2">
-                      {(profile.certifications || []).map((cert) => (
-                        <span key={cert} className="rounded-full bg-green-100 text-green-700 px-3 py-1 text-xs font-medium">
-                          {cert}
-                        </span>
-                      ))}
+                    {(profile.certifications || []).map((cert, index) => {
+  const certText =
+    typeof cert === "string"
+      ? cert
+      : cert?.name
+      ? `${cert.name}${cert.date ? ` (${cert.date})` : ""}`
+      : JSON.stringify(cert);
+
+  return (
+    <span
+      key={`${certText}-${index}`}
+      className="rounded-full bg-green-100 text-green-700 px-3 py-1 text-xs font-medium"
+    >
+      {certText}
+    </span>
+  );
+})}
                     </div>
                   </div>
                 </div>

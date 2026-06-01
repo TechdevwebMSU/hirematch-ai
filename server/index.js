@@ -66,6 +66,21 @@ ${resumeText}
     let parsedProfile;
     try {
       parsedProfile = JSON.parse(aiText.replace(/```json/g, "").replace(/```/g, "").trim());
+      parsedProfile.skills = (parsedProfile.skills || []).map((item) =>
+  typeof item === "string" ? item : item.name || JSON.stringify(item)
+);
+
+parsedProfile.certifications = (parsedProfile.certifications || []).map((item) =>
+  typeof item === "string"
+    ? item
+    : item.name
+    ? `${item.name}${item.date ? ` (${item.date})` : ""}`
+    : JSON.stringify(item)
+);
+
+parsedProfile.targetRoles = (parsedProfile.targetRoles || []).map((item) =>
+  typeof item === "string" ? item : item.name || item.title || JSON.stringify(item)
+);
     } catch {
       parsedProfile = {
         name: "",
