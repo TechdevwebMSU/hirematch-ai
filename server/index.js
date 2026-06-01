@@ -5,6 +5,7 @@ const pdfParse = require("pdf-parse");
 const axios = require("axios");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require("dotenv").config();
+const mammoth = require("mammoth");
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -28,8 +29,22 @@ app.post("/upload-resume", upload.single("resume"), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "No resume file uploaded" });
 
-    const data = await pdfParse(req.file.buffer);
-    const resumeText = data.text;
+    let resumeText = "";
+
+if (req.file.mimetype === "application/pdf") {
+  const data = await pdfParse(req.file.buffer);
+  resumeText = data.text;
+} else if (
+  req.file.mimetype ===
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+) {
+  const data = await mammoth.extractRawText({ buffer: req.file.buffer });
+  resumeText = data.value;
+} else {
+  return res.status(400).json({
+    error: "Unsupported file type. Please upload PDF or DOCX.",
+  });
+}
 
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash-lite",
