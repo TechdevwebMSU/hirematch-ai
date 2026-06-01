@@ -153,7 +153,7 @@ export default function App() {
           </h1>
 
           <p className="mt-6 text-lg text-slate-900/65 max-w-xl leading-8">
-            Choose your target city, country and let the agent return matching roles, apply links, and tailored
+            Choose your target city, country and let the agent return matching roles, apply links and tailored
             cover letters.
           </p>
 
