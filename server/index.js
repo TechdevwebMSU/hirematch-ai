@@ -14,12 +14,6 @@ app.use(cors());//Allow front and backend to communicate.
 app.use(express.json());//Let's backend read JSON body from requests
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);//Create Gemini key from API key
-function shuffleArray(array) {//function helps to randomize jobs
-  return array
-    .map((item) => ({ item, sort: Math.random() }))//attach random num to each item
-    .sort((a, b) => a.sort - b.sort)//sort items randomly
-    .map(({ item }) => item);//returns shuffled objects
-}
 
 app.get("/", (req, res) => {
   res.send("Resume Job Match Agent backend is running");
